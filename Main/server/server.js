@@ -1,6 +1,7 @@
 const express = require('express');
 const { ApolloServer } = require('apollo-derver-express')
 const path = require('path');
+const { authMiddleware } = require('./utils/auth');
 
 const { typeDefs, resolvers } = require('./schemas')
 const db = require('./config/connection');
@@ -9,7 +10,8 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 const server = new ApolloServer({  
   typeDefs,
-  resolvers
+  resolvers,
+  context: authMiddleware,
 });
 
 app.use(express.urlencoded({ extended: false }));
