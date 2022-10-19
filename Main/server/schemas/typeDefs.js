@@ -20,7 +20,7 @@ const typeDefs = gql`
         token: ID!
         user: User
   }
-     input SaveBookInput {
+     input SavedBookInput {
         authors: [String]
         title: String
         description: String
