@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Form, Button, Alert } from 'react-bootstrap';
 // Imports the useMutation hook from the @apollo-client so that mutations can be called
-import { useMutation } from '@apollo/client'
+import { useMutation } from '@apollo/react-hooks'
 // Imports the ADD_USER mutation from the mutations.js file in the client side utils folder
 import { ADD_USER } from '../utils/mutations';
 import Auth from '../utils/auth';
@@ -33,19 +33,15 @@ const SignupForm = () => {
     }
 
     try {
-        // Sets the addUser request sent to the apolloServer ad the veriable data 
-        const { data } = await addUser({ variables: userFormData });
-
-      if (error) {
-        console.log(error.message);
-      }
-
-      // Takes the token assigned to the user when created and logges the user in
+      const { data } = await addUser({
+        variables: { ...userFormData }
+      });
       Auth.login(data.addUser.token);
-        } catch (err) {
-          console.error(err);
-          setShowAlert(true);
+    } catch (err) {
+      console.error(err);
+      setShowAlert(true);
     }
+
 
 
     setUserFormData({
@@ -109,6 +105,7 @@ const SignupForm = () => {
           Submit
         </Button>
       </Form>
+      {error && <div>Sign up failed</div>}
     </>
   );
 };
